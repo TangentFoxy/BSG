@@ -6,7 +6,7 @@ function love.conf(t)
 	if debug then t.console = true end
 
 	t.window = {}
-	t.window.title = "Battlestar Galactica, 33"
+	t.window.title = "Thirty-Three"
 	t.window.width = 960
 	t.window.height = 540
 	t.window.fullscreen = false
