@@ -72,22 +72,29 @@ end
 
 function love.mousepressed(x, y, button)
     if button == "l" then
-        for i=1,#ships do
-            if ships[i].selection.r then
-                if pointInRadius(x, y, ships[i].x, ships[i].y, ships[i].selection.r) then
-                    -- selected
-                    -- NOW CHECK IF HAS NODES AND IF WE ARE SELECTING A SHIP ON A NODE!
-                    selected = {}
-                    selected.x = ships[i].x
-                    selected.y = ships[i].y
-                end
-            else
-                if pointInAABB(x, y, ships[i].x, ships[i].y, ships[i].selection, ships[i].rotation) then
-                    -- we are selecting it!
-                    -- NOW CHECK IF HAS NODES AND IF WE ARE SELECTING A SHIP ON A NODE!
-                    selected = {}
-                    selected.x = ships[i].x
-                    selected.y = ships[i].y
+        if selected then
+            -- find out where this actually is, now the ship selected is ordered to move to this point
+            selected.ship:moveTo(x * scale + hx, y * scale + hy)
+        else
+            for i=1,#ships do
+                if ships[i].selection.r then
+                    if pointInRadius(x, y, ships[i].x, ships[i].y, ships[i].selection.r) then
+                        -- selected
+                        -- NOW CHECK IF HAS NODES AND IF WE ARE SELECTING A SHIP ON A NODE!
+                        selected = {}
+                        selected.ship = ships[i]
+                        selected.x = ships[i].x
+                        selected.y = ships[i].y
+                    end
+                else
+                    if pointInAABB(x, y, ships[i].x, ships[i].y, ships[i].selection, ships[i].rotation) then
+                        -- we are selecting it!
+                        -- NOW CHECK IF HAS NODES AND IF WE ARE SELECTING A SHIP ON A NODE!
+                        selected = {}
+                        selected.ship = ships[i]
+                        selected.x = ships[i].x
+                        selected.y = ships[i].y
+                    end
                 end
             end
         end

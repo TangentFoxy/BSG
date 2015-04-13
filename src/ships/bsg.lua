@@ -35,13 +35,16 @@ return function(x, y, rotation)
     }
 
     self.dock = function(self, ship, node)
-        if self.node[node].docked then return false end
+        if self.node[node].docked or ship.isDocked then return false end
 
         ship.x = self.node[node].x
         ship.y = self.node[node].y
         ship.rotation = self.node[node].rotation
 
         self.node[node].docked = ship
+        ship.isDocked = true
+        ship.dockedTo = self
+        ship.dockedNode = node
         return true
     end
 
@@ -49,6 +52,9 @@ return function(x, y, rotation)
         if not self.node[node].docked then return false end
 
         local ship = self.node[node].docked
+        ship.isDocked = false
+        ship.dockedTo = false
+        ship.dockedNode = false
         self.node[node].docked = false
 
         return ship
