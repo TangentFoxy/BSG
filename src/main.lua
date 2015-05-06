@@ -27,6 +27,52 @@ function love.load()
     end
 end
 
+local timer = 0
+function love.update(dt)
+    timer = timer + dt
+    if timer >= 33 then
+        timer = timer - 33
+    end
+end
+
+local function drawClock(x, y, r)
+    local time = math.floor(33 - timer)
+    if time == 0 then time = 33 end
+
+    local maxTime = 33
+
+    local segments = 33
+    local segmentRadius = math.pi*2 / segments
+    local dividerRadius = segmentRadius / 2
+    --local time = 33
+
+    lg.setColor(255, 102, 0)
+    for i=1,time do
+        lg.arc("fill", x, y, r, (i-1)*segmentRadius - math.pi/2, i*segmentRadius - dividerRadius - math.pi/2)
+    end
+    lg.setColor(0, 0, 0)
+    lg.circle("fill", x, y, r/1.15)
+
+    -- this looks cool and all, but it is the same function as the outer ring
+    -- instead, use this internal space for displaying things like fuel and water and supplies
+    --[[
+    segments = 12
+    segmentRadius = math.pi*2 / segments
+    dividerRadius = segmentRadius / segments * 2
+    time = math.floor(time/maxTime * segments) --33 -> 12   percentage = time/maxTime..multiply this by 12
+
+    lg.setColor(255, 102, 0)
+    for i=1,time do
+        lg.arc("fill", x, y, r/1.5, (i-1)*segmentRadius - math.pi/2, i*segmentRadius - dividerRadius - math.pi/2)
+    end
+    lg.setColor(0, 0, 0)
+    lg.circle("fill", x, y, r/2)
+    --]]
+
+    --tmp, really each color-dependent section should do this itself!
+    lg.setColor(255, 255, 255)
+end
+
 function love.draw()
     lg.translate(hx, hy)
 
@@ -39,6 +85,8 @@ function love.draw()
         lg.point(selected.x * scale, selected.y * scale)
         lg.setColor(255, 255, 255)
     end
+
+    drawClock(-355, -145, 120)
 end
 
 function love.keypressed(key, unicode)

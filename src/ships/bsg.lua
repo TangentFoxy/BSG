@@ -60,5 +60,7 @@ return function(x, y, rotation)
         return ship
     end
 
+    self.moveTo = function() end
+
     return self
 end
