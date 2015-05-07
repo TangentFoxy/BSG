@@ -1,19 +1,15 @@
-return function(x, y, rotation)
-    local self = {}
+local class = require "lib.middleclass"
 
+local Ship = require "ships.Ship"
+
+local Viper = class('Viper', Ship)
+
+function Viper:initialize(x, y, rotation)
+    Ship.initialize(self, x, y, rotation)
     self.img = "viper"
+    --offsets
     self.ox = 4.5
     self.oy = 7.5
-
-    self.x = x or 0
-    self.y = y or 0
-    self.rotation = rotation or 0
-
-    self.destination = {
-        x = x or 0,
-        y = y or 0
-    }
-    self.isMoving = false
 
     --[[
     self.selection = {
@@ -25,24 +21,15 @@ return function(x, y, rotation)
         r = 5
     }
 
-    --self.node = false
-    self.isDocked = false
-    self.dockedTo = false
-    self.dockedNode = false
+    self.Resources.maxAmmo = 1800 --10 shots per second? 5s per barrel
+    self.Resources.maxFuel = 30000 --86400s = 1day, x = 1/2 day's thrust
+    self.Resources.maxCrew = 1
 
-    self.moveTo = function(self, x, y)
-        if self.isDocked then
-            self.dockedTo:undock(self.dockedNode)
-        end
-        self.destination.x = x
-        self.destination.y = y
-        self.isMoving = true
-    end
+    self.Resources.ammo = math.random(0, 20)
+    self.Resources.fuel = math.random(120, 1500)
 
-    self.update = function(self, dt)
-        -- check if moving, check our speed, see how far along the "line" we can go, go there
-        -- if reached destination ... WELL SHIT DEST NEEDS TO BE ABLE TO KNOW IF IS SHIP OR WHATEVER
-    end
-
-    return self
+    self.Resources.fuelUseIdle = 0.09
+    self.Resources.fuelUseMoving = 0.76
 end
+
+return Viper
