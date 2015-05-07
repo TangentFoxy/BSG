@@ -24,6 +24,7 @@ function Ship:initialize(x, y, rotation)
 
     self.dockedTo = false
 
+    self.engineStatus = "idle"
     self.Resources = Resources()
 end
 
@@ -77,6 +78,7 @@ function Ship:moveTo(x, y)
 end
 
 function Ship:update(dt)
+    self.Resources:update(dt, self.engineStatus)
     --check our speed, see how far along the "line" we can go, go there
     -- if reached destination ... WELL SHIT DEST NEEDS TO BE ABLE TO KNOW IF IS SHIP OR WHATEVER
 end

@@ -36,6 +36,25 @@ function Resources:initialize()
     self.crewUse = 0
 end
 
+function Resources:update(dt, engineStatus)
+    self.ammo = self.ammo - self.ammoUse * dt
+    if engineStatus == "idle" then
+        self.fuel = self.fuel - self.fuelUseIdle * dt
+    elseif engineStatus == "moving" then
+        self.fuel = self.fuel - self.fuelUseMoving * dt
+    else
+        error("Invalid engineStatus!")
+    end
+    self.supplies = self.supplies - self.suppliesUse * dt
+    self.water = self.water - self.waterUse * dt
+    self.food = self.food - self.foodUse * dt
+    self.metal = self.metal - self.metalUse * dt
+    self.ore = self.ore - self.oreUse * dt
+    self.crew = self.crew - self.crewUse * dt
+
+    --TODO check if running out of anything, and do whatever is appropriate
+end
+
 function Resources:maxEverything()
     self.ammo = self.maxAmmo
     self.fuel = self.maxFuel
