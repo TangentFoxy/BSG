@@ -1,0 +1,12 @@
+1-4 on first dial, main dial
+5-8 on second dial
+
+1 Time     orange
+2 Ammo     red
+3 Fuel     yellow
+4 Supplies blue ?
+
+5 Water    teal ?
+6 Food     green
+7 Metal    silver
+8 Ore      brown

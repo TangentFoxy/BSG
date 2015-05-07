@@ -73,6 +73,8 @@ local function drawClock(x, y, r)
     lg.setColor(255, 255, 255)
 end
 
+local drawWheel = require "wheel";
+
 function love.draw()
     lg.translate(hx, hy)
 
@@ -86,7 +88,8 @@ function love.draw()
         lg.setColor(255, 255, 255)
     end
 
-    drawClock(-355, -145, 120)
+    --drawClock(-355, -145, 120)
+    drawWheel(-355, -145, 120, timer)
 end
 
 function love.keypressed(key, unicode)
