@@ -1,3 +1,5 @@
+local resourceConsumptionMultiplier = 500 --does not apply to ammo or crew
+
 local class = require "lib.middleclass"
 
 local Resources = class('Resources')
@@ -25,6 +27,7 @@ function Resources:initialize()
     self.maxCrew = 0
 
     self.ammoUse = 0
+    self.fuelUseOff = 0
     self.fuelUseIdle = 0
     self.fuelUseMoving = 0
     self.fuelUseJump = 0
@@ -38,18 +41,20 @@ end
 
 function Resources:update(dt, engineStatus)
     self.ammo = self.ammo - self.ammoUse * dt
-    if engineStatus == "idle" then
-        self.fuel = self.fuel - self.fuelUseIdle * dt
+    if engineStatus == "off" then
+        self.fuel = self.fuel - self.fuelUseOff * dt * resourceConsumptionMultiplier
+    elseif engineStatus == "idle" then
+        self.fuel = self.fuel - self.fuelUseIdle * dt * resourceConsumptionMultiplier
     elseif engineStatus == "moving" then
-        self.fuel = self.fuel - self.fuelUseMoving * dt
+        self.fuel = self.fuel - self.fuelUseMoving * dt * resourceConsumptionMultiplier
     else
         error("Invalid engineStatus!")
     end
-    self.supplies = self.supplies - self.suppliesUse * dt
-    self.water = self.water - self.waterUse * dt
-    self.food = self.food - self.foodUse * dt
-    self.metal = self.metal - self.metalUse * dt
-    self.ore = self.ore - self.oreUse * dt
+    self.supplies = self.supplies - self.suppliesUse * dt * resourceConsumptionMultiplier
+    self.water = self.water - self.waterUse * dt * resourceConsumptionMultiplier
+    self.food = self.food - self.foodUse * dt * resourceConsumptionMultiplier
+    self.metal = self.metal - self.metalUse * dt * resourceConsumptionMultiplier
+    self.ore = self.ore - self.oreUse * dt * resourceConsumptionMultiplier
     self.crew = self.crew - self.crewUse * dt
 
     --TODO check if running out of anything, and do whatever is appropriate

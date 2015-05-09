@@ -4,7 +4,7 @@ local inspect = require "lib.inspect"
 local lg = love.graphics
 
 local hx, hy = lg.getWidth() / 2, lg.getHeight() / 2
-local scale = 8
+local scale = 2
 
 local images = {}
 local fleet = {}
@@ -30,6 +30,7 @@ function love.load()
         local v = viper()
         table.insert(fleet, v)
         fleet[1]:dock(v, i)
+        v.engineStatus = "off"
     end
 end
 
@@ -119,8 +120,11 @@ local function getStats()
         ore = math.floor(ore)
     }
 end
-local timing = -60
+local timing = -33
+local paused = false
 function love.update(dt)
+    if paused then return end
+    dt = dt * 10 --temporary accelerated
     timer = timer + dt
     if timer >= 1 then
         timer = timer - 1
@@ -141,11 +145,17 @@ function love.update(dt)
     end
 
     timing = timing + dt
-    if timing >= 60 then
-        timing = timing -120
+    --[[
+    if timing >= 121 then
+        timing = timing -181+60-33
     end
+    --]]
 
-    stats.time = math.floor(timing) --TMP
+    stats.time = timing --TMP ?
+
+    for i=1,#fleet do
+        fleet[i]:update(dt)
+    end
 end
 
 function love.draw()
@@ -163,10 +173,32 @@ function love.draw()
     end
 
     hud(stats)
+
+    ---[[temporary, raw Resource stats of Galactica
+    local r = fleet[1].Resources
+    lg.setColor(255, 255, 255)
+    lg.print("Ammo:      " .. math.floor(r.ammo/r.maxAmmo*100) .. "% " .. r.ammo, -300, -200)
+    lg.print("Fuel:        " .. math.floor(r.fuel/r.maxFuel*100) .. "% " .. r.fuel, -300, -190)
+    lg.print("Supplies: " .. math.floor(r.supplies/r.maxSupplies*100) .. "% " .. r.supplies, -300, -180)
+    lg.print("Food:       " .. math.floor(r.food/r.maxFood*100) .. "% " .. r.food, -300, -170)
+    lg.print("Water:     " .. math.floor(r.water/r.maxWater*100) .. "% " .. r.water, -300, -160)
+    lg.print("Metal:      " .. math.floor(r.metal/r.maxMetal*100) .. "% " .. r.metal, -300, -150)
+    lg.print("Ore:         " .. math.floor(r.ore/r.maxOre*100) .. "% " .. r.ore, -300, -140)
+    --]]
+
+    --[[tmp, printing total time as hours/minutes/seconds]]
+    lg.print("Time elapsed: " .. math.floor(timing/60/60) .. ":" .. math.floor(timing/60)%60 .. ":" .. math.floor(timing)%60, -300, -120)
+    local result = 0
+    for i=2,#fleet do
+        result = result + fleet[i].Resources.fuel
+    end
+    lg.print("Viper fuel: " .. result, -300, -110)
 end
 
 function love.keypressed(key, unicode)
     if key == "escape" then
         love.event.quit()
+    elseif key == " " then
+        paused = not paused
     end
 end

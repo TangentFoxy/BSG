@@ -1,11 +1,12 @@
 math.randomseed(os.time())
 math.random() math.random()
 
+local ninety = 90 * math.pi / 180
+
 local class = require "lib.middleclass"
 
 local Ship = require "ships.Ship"
 local Node = require "ships.Node"
-local ninety = 90 * math.pi / 180
 
 local BSG = class('BSG', Ship)
 
