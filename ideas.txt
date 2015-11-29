@@ -4,9 +4,9 @@
 1 Time     orange
 2 Ammo     red
 3 Fuel     yellow
-4 Supplies blue ?
+4 Supplies teal
 
-5 Water    teal ?
+5 Water    blue
 6 Food     green
 7 Metal    silver
 8 Ore      brown
