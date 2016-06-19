@@ -23,7 +23,7 @@ function love.load()
     images.viper = lg.newImage('img/viper.png')
     --tmp
     lg.setPointSize(10)
-    lg.setPointStyle("rough")
+    --lg.setPointStyle("rough") --WAS REMOVED IN 0.10, FIND ITS REPLACEMENT
 
     fleet[1] = bsg()
     for i=1,8 do
@@ -124,7 +124,7 @@ local timing = -33
 local paused = false
 function love.update(dt)
     if paused then return end
-    dt = dt * 10 --temporary accelerated
+    dt = dt --* 10 --temporary accelerated
     timer = timer + dt
     if timer >= 1 then
         timer = timer - 1
