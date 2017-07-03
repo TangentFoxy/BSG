@@ -142,6 +142,18 @@ function love.update(dt)
             ore = math.random(0, 60)
         }
         --]]
+        --[[
+        stats = {
+            time = 0,
+            ammo = 0,
+            fuel = 0,
+            supplies = 0,
+            water = 0,
+            food = 0,
+            metal = 0,
+            ore = 0
+        }
+        --]]
     end
 
     timing = timing + dt
